@@ -8,10 +8,17 @@ exports.register = async (req, res) => {
     if (existingUser) return res.status(409).json({ message: "Email already exist" })
 
     const user = new User()
-    if (role) user.role = role
     user.name = name
     user.email = email
     user.password = password
+    if (role == "user") {
+        user.role = role
+        const doctor = await User.findOne({ email: "james@gmail.com" });
+        if (doctor && doctor.role === "doctor") {
+            doctor.patient.push(user);
+            await doctor.save();
+        }
+    }
     await user.save()
     const { password: hashedPassword, ...newUser } = user.toJSON()
 

@@ -5,10 +5,14 @@ const medicationSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    treat: {
+    reason: {
         type: String,
         required: true,
     },
+    frequency: {
+        type: String,
+        required: true,
+    }
 });
 
 const Medication = mongoose.model('Medication', medicationSchema);

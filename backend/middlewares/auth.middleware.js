@@ -11,11 +11,10 @@ exports.authMiddleware = async (req, res, next) => {
 
         const decoded = jwt.verify(token, process.env.SECRET_KEY)
         const user = await User.findById(decoded.id, "-password")
-
         req.user = user
-
         next()
     } catch (e) {
+        console.log(e)
         return res.status(500).json({ message: "Server error" })
     }
 }
