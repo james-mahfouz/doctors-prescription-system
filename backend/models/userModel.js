@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     },
     medication: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course',
+        ref: 'Medication',
     }],
 });
 

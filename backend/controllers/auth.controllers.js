@@ -12,7 +12,6 @@ exports.register = async (req, res) => {
     user.name = name
     user.email = email
     user.password = password
-
     await user.save()
     const { password: hashedPassword, ...newUser } = user.toJSON()
 

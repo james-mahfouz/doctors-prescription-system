@@ -12,6 +12,11 @@ app.use(express.urlencoded({ extended: true }))
 const authRouter = require('./routes/auth.routes')
 app.use('/auth', authRouter)
 
+const doctorRouter = require("./routes/doctor.routes")
+const { authMiddleware } = require('./middlewares/auth.middleware')
+const { doctorMiddleware } = require("./middlewares/doctor.middleware");
+app.use("/doctor", authMiddleware, doctorMiddleware, doctorRouter)
+
 if (cluster.isMaster) {
     const numCpus = OS.cpus().length;
     for (let i = 0; i < numCpus; i++) {
