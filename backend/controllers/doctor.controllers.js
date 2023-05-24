@@ -46,3 +46,21 @@ exports.add_medication = async (req, res) => {
 
     }
 }
+
+exports.delete_medication = async (req, res) => {
+    try {
+        const { patient_id, medication_id } = req.body
+        console.log(medication_id)
+        patient = await User.findById(patient_id)
+        console.log(patient)
+        patient.medication.pull(medication_id);
+        await patient.save();
+
+        await Medication.findByIdAndRemove(medication_id);
+
+        res.status(200).json({ message: 'Medication deleted successfully' });
+
+    } catch (e) {
+        res.status(500).json({ error: e.message })
+    }
+}
