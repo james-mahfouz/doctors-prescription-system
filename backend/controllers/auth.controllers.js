@@ -1,41 +1,21 @@
-const mongoose = require('mongoose');
-const bcrypt = require("bcrypt")
+const User = require("../models/userModel")
+const jwt = require("jsonwebtoken")
 
-const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    password: {
-        type: String,
-        required: true,
-    },
-    role: {
-        type: String,
-        enum: ['user', 'doctor'],
-        default: 'doctor',
-    },
-    medication: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course',
-    }],
-});
+exports.register = async (req, res) => {
+    const { name, email, password, role } = req.body
 
-userSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) return next();
+    const existingUser = await User.findOne({ email })
+    if (existingUser) return res.status(409).json({ message: "Email already exist" })
 
-    this.password = await bcrypt.hash(this.password, 10);
-    next();
-})
+    const user = new User()
+    if (role) user.role = role
+    user.name = name
+    user.email = email
+    user.password = password
 
-userSchema.methods.matchPassword = async function (password) {
-    return bcrypt.compare(password, this.password)
+    await user.save()
+    const { password: hashedPassword, ...newUser } = user.toJSON()
+
+    const token = jwt.sign({ id: user._id, email: user.email }, process.env.SECRET_KEY)
+    res.status(201).json({ "user": newUser, "token": token })
 }
-
-const User = mongoose.model("User", userSchema);
-module.exports = User;
