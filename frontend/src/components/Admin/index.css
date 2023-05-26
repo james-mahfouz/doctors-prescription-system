@@ -1,0 +1,162 @@
+
+.admin-body{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.left{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 250px;
+    background-color: #714DF4;
+    width: 250px;
+    padding-top: 30px;
+    height: 100vh;
+    border-right: #000 solid 2px;
+}
+
+.admin-logo {
+    width: 230px;
+    cursor: pointer;
+}
+
+.admin-logo img {
+    width: 100%;
+    height: auto;
+}
+
+.options{
+    margin-top: 40px;
+    width: 100%;
+}
+
+.option{
+    padding-left: 40px;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+    color: #fff;
+}
+
+.option:hover{
+    background-color: #00D39C;
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.right{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #f0f5f8;
+}
+
+.top-bar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 40px;
+    padding-right: 40px;
+    background-color: rgba(0,0,0,0.8);
+    margin-bottom: 30px;
+}
+
+.admin-name{
+    color: #fff;
+}
+
+.logout-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FF4136;
+    height: 40px;
+    width: 90px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.infos{
+    padding-left: 40px;
+    padding-right: 40px;
+    width: 100%;
+}
+.profile{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+}
+.users_info{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    min-width: 350px;
+    width: 60%;
+    justify-content: center;
+    background-image: url(../../assets/final.svg);  
+    background-position: top center;
+    background-size:cover;
+    padding: 25px 50px;
+    border-radius: 20px;
+}
+
+.users_info h1{
+    color: rgba(0,0,0,0.8);
+    color: #fff;
+}
+
+.profile-pic{
+    margin-bottom: 30px;
+    position: relative;
+    display: inline-block;
+}
+
+.user_pp{
+    transition: filter 0.2s ease-in-out;
+    background-color: #00D39C;
+    position: relative;
+}
+
+.edit-icon{
+    font-weight: 400;
+    font-size: 24px;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    cursor: pointer;
+}
+
+.user_pp:hover{
+    cursor: pointer;
+    position: relative;
+    filter: brightness(70%);
+}
+
+.user_pp:hover ~ .edit-icon{
+    display: block;
+}
+
+.edit-icon:hover ~ .user_pp{
+    filter: brightness(70%);
+}
+
+.editable{ 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.update-info{
+    width: 100%;
+}
+

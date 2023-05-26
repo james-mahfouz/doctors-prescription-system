@@ -1,0 +1,116 @@
+.signin-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: #f0f5f8;
+    height: 100vh;
+}
+
+.signin-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.signin-logo img {
+    max-width: 330px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.wrapper {
+    max-width: 450px;
+    width: 100%;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    margin: auto;
+    margin-top: 40px;
+}
+
+.wrapper .title {
+    margin-bottom: 40px;
+    text-align: center;
+    margin-top: -10px;
+}
+
+.wrapper .title h2 {
+    font-weight: 800;
+    font-size: 1.9rem;
+}
+
+.wrapper .form {
+    width: 100%;
+}
+
+.wrapper .form .inputfield {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.password-input-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-input-container button {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #999;
+    font-size: 1.2em;
+}
+
+.password-input-container input {
+    padding-right: 30px;
+}
+
+.wrapper .form .inputfield label {
+    width: 200px;
+    margin-right: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.wrapper .form .inputfield .register_input {
+    width: 100%;
+    outline: none;
+    border: none;
+    border-bottom: #D8E9EF solid 2px;
+    font-size: 15px;
+    padding: 8px 10px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.wrapper .form .inputfield .btn {
+    width: 100%;
+    padding: 10px 10px;
+    font-size: 17px;
+    border: 0px;
+    background: #714DF4;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 10px;
+    font-weight: 300;
+    margin-bottom: -7px;
+}
+
+.google_provider{
+    float: none;
+    position: static;
+    display: block;
+    margin: auto;
+    width: max-content;
+    justify-content: center;
+}
