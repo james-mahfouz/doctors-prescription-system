@@ -50,9 +50,8 @@ exports.add_medication = async (req, res) => {
 exports.delete_medication = async (req, res) => {
     try {
         const { patient_id, medication_id } = req.body
-        console.log(medication_id)
+
         patient = await User.findById(patient_id)
-        console.log(patient)
         patient.medication.pull(medication_id);
         await patient.save();
 
@@ -64,3 +63,25 @@ exports.delete_medication = async (req, res) => {
         res.status(500).json({ error: e.message })
     }
 }
+
+exports.update_medication = async (req, res) => {
+    try {
+        const { medication_id, name, frequency, reason } = req.body;
+        const medication = await Medication.findById(medication_id);
+
+        if (!medication) {
+            return res.status(404).json({ error: 'Medication not found' });
+        }
+
+        medication.name = name;
+        medication.frequency = frequency;
+        medication.reason = reason;
+
+        await medication.save();
+
+        return res.json({ message: 'Medication updated successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
