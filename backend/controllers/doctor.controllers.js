@@ -26,7 +26,6 @@ exports.get_patient_medication = async (req, res) => {
 exports.add_medication = async (req, res) => {
     try {
         const { name, frequency, reason, patient_id } = req.body
-        console.log(name, frequency, reason, patient_id)
         const medication = new Medication()
         medication.name = name
         medication.frequency = frequency
