@@ -20,11 +20,8 @@ const PatientMedication = ({ patient_id, patient_name }) => {
             },
           }
         );
-        console.log(response.data.medications);
         setMedication(response.data.medications);
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     };
 
     fetchPatientMedication();
@@ -36,15 +33,14 @@ const PatientMedication = ({ patient_id, patient_name }) => {
         patient_id: patient_id,
         medication_id: medicationId,
       };
-      await axios.delete(apiUrl + `doctor/delete_medication`, data, {
+      await axios.post(apiUrl + `doctor/delete_medication`, data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
-      // Remove the deleted medication from the state
       setMedication((prevMedication) =>
-        prevMedication.filter((med) => med.id !== medicationId)
+        prevMedication.filter((med) => med._id !== medicationId)
       );
     } catch (error) {
       console.error(error);
@@ -53,13 +49,12 @@ const PatientMedication = ({ patient_id, patient_name }) => {
 
   const handleMedicationUpdate = async (medicationId, updatedMedication) => {
     try {
-      await axios.put(apiUrl + `doctor/update_medication`, updatedMedication, {
+      await axios.post(apiUrl + `doctor/update_medication`, updatedMedication, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
-      // Update the medication in the state
       setMedication((prevMedication) =>
         prevMedication.map((med) =>
           med.id === medicationId ? updatedMedication : med
@@ -69,11 +64,7 @@ const PatientMedication = ({ patient_id, patient_name }) => {
       console.error(error);
     }
   };
-  //   scrollable
-  //   scrollHeight="400px"
-  //   virtualScrollerOptions={{ itemSize: 46 }}
-  //   tableStyle={{ minWidth: "50rem" }}
-  //   sortMode="multiple"
+
   return (
     <div className="popup-overlay">
       <div className="popup">
@@ -97,14 +88,14 @@ const PatientMedication = ({ patient_id, patient_name }) => {
                 <Button
                   label="Update"
                   onClick={() =>
-                    handleMedicationUpdate(rowData.id, { ...rowData })
+                    handleMedicationUpdate(rowData._id, { ...rowData })
                   }
                   className="p-mr-2"
                 />
                 <span style={{ marginLeft: "8px" }}></span>
                 <Button
                   label="Delete"
-                  onClick={() => handleMedicationDelete(rowData.id)}
+                  onClick={() => handleMedicationDelete(rowData._id)}
                 />
               </>
             )}
