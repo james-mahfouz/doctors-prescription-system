@@ -35,14 +35,7 @@ const Login = () => {
       localStorage.setItem("token", response.data.token);
       navigate("/");
     } catch (error) {
-      if (error.response.data.detail == "email") {
-        setError(error.response.data.detail + " not found");
-        setEmailError(true);
-      }
-      if (error.response.data.detail == "password") {
-        setError("incorrect Password");
-        setPasswordError(true);
-      }
+      setError("Invalid credentials");
     }
   };
 

@@ -58,33 +58,19 @@ function Signup() {
       email: email,
       password: password,
     };
+    console.log(name, email, password);
 
     try {
       const response = await axios.post(apiUrl + "auth/register", data);
-      localStorage.setItem("token", response.data[0].token);
-      navigate("/");
-    } catch (error) {
-      setError(error.response.data.detail.detail);
-      if (error.response.data.detail.error == "name") {
-        setNameError(true);
-      }
-      if (error.response.data.detail.error == "email") {
-        setEmailError(true);
-      }
-      if (error.response.data.detail.error == "password") {
-        setPasswordError(true);
-      }
-    }
-  };
-  const handleGoogleLogin = async (credential) => {
-    try {
-      const response = await axios.post(apiUrl + "auth/google_login", {
-        token: credential.credential,
-      });
       localStorage.setItem("token", response.data.token);
       navigate("/");
-    } catch (e) {
-      setError("google signin failed");
+    } catch (error) {
+      console.log(error);
+      setError(error.response.data.message);
+
+      if (error.response.data.detail == "email") {
+        setEmailError(true);
+      }
     }
   };
 
