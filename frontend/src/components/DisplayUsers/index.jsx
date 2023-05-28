@@ -1,6 +1,6 @@
 import "../Admin/index.css";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PatientMedication from "../Medication";
@@ -16,6 +16,8 @@ const DisplayUsers = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [patientId, setPatientId] = useState(null);
   const [patientName, setPatientName] = useState(null);
+
+  const popupRef = useRef(null);
 
   const apiUrl = process.env.API_URL;
   useEffect(() => {
@@ -37,6 +39,10 @@ const DisplayUsers = () => {
     };
     getUsers();
   }, []);
+
+  const handleClose = () => {
+    setShowPopup(false);
+  };
 
   const get_patient_medication = (id, name) => {
     setShowPopup(true);
@@ -93,10 +99,13 @@ const DisplayUsers = () => {
           />
         </DataTable>
         {showPopup && patientId && (
-          <PatientMedication
-            patient_id={patientId}
-            patient_name={patientName}
-          />
+          <div className="popup-content">
+            <PatientMedication
+              patient_id={patientId}
+              patient_name={patientName}
+              handleClose={handleClose}
+            />
+          </div>
         )}
       </div>
     </div>

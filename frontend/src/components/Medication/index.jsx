@@ -6,7 +6,7 @@ import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 
-const PatientMedication = ({ patient_id, patient_name }) => {
+const PatientMedication = (props, { patient_id, patient_name }) => {
   const [medication, setMedication] = useState([]);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [medicationName, setMedicationName] = useState("");
@@ -19,7 +19,7 @@ const PatientMedication = ({ patient_id, patient_name }) => {
     const fetchPatientMedication = async () => {
       try {
         const response = await axios.get(
-          apiUrl + `doctor/get_patient_medication/${patient_id}`,
+          apiUrl + `doctor/get_patient_medication/${props.patient_id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -33,12 +33,12 @@ const PatientMedication = ({ patient_id, patient_name }) => {
     };
 
     fetchPatientMedication();
-  }, [patient_id]);
+  }, [props.patient_id]);
 
   const updateCallback = async () => {
     try {
       const response = await axios.get(
-        apiUrl + `doctor/get_patient_medication/${patient_id}`,
+        apiUrl + `doctor/get_patient_medication/${props.patient_id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -65,7 +65,7 @@ const PatientMedication = ({ patient_id, patient_name }) => {
         return;
       }
       const data = {
-        patient_id: patient_id,
+        patient_id: props.patient_id,
         medication_id: medicationId,
       };
       await axios.post(apiUrl + `doctor/delete_medication`, data, {
@@ -100,7 +100,17 @@ const PatientMedication = ({ patient_id, patient_name }) => {
       <div className="popup">
         {!showUpdateForm && (
           <>
-            <h2>{patient_name} Medication</h2>
+            <div className="medication-header">
+              <h2>{props.patient_name} Medication</h2>
+              <Button
+                icon="pi pi-times"
+                rounded
+                text
+                severity="danger"
+                aria-label="Cancel"
+                onClick={props.handleClose}
+              />
+            </div>
             <DataTable
               value={medication}
               className="p-datatable-striped"
@@ -128,11 +138,13 @@ const PatientMedication = ({ patient_id, patient_name }) => {
                         )
                       }
                       className="p-mr-2"
+                      style={{ backgroundColor: "#FF0000" }}
                     />
                     <span style={{ marginLeft: "8px" }}></span>
                     <Button
                       label="Delete"
                       onClick={() => handleMedicationDelete(rowData._id)}
+                      style={{ backgroundColor: "#FF0000" }}
                     />
                   </>
                 )}
