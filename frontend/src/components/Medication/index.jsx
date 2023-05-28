@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import MedicationUpdateForm from "../UpdateMedication";
+
 import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
-import classNames from "classnames";
 
 const PatientMedication = ({ patient_id, patient_name }) => {
   const [medication, setMedication] = useState([]);
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [medicationName, setMedicationName] = useState("");
+  const [medicationFrequency, setMedicationFrequency] = useState("");
+  const [medicationReason, setMedicationReason] = useState("");
+  const [medicationId, setMedicationId] = useState("");
   const apiUrl = process.env.API_URL;
 
   useEffect(() => {
@@ -21,7 +27,9 @@ const PatientMedication = ({ patient_id, patient_name }) => {
           }
         );
         setMedication(response.data.medications);
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     fetchPatientMedication();
@@ -29,6 +37,12 @@ const PatientMedication = ({ patient_id, patient_name }) => {
 
   const handleMedicationDelete = async (medicationId) => {
     try {
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this medication?"
+      );
+      if (!confirmed) {
+        return; // User canceled the deletion
+      }
       const data = {
         patient_id: patient_id,
         medication_id: medicationId,
@@ -47,22 +61,30 @@ const PatientMedication = ({ patient_id, patient_name }) => {
     }
   };
 
-  const handleMedicationUpdate = async (medicationId, updatedMedication) => {
-    try {
-      await axios.post(apiUrl + `doctor/update_medication`, updatedMedication, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      setMedication((prevMedication) =>
-        prevMedication.map((med) =>
-          med.id === medicationId ? updatedMedication : med
-        )
-      );
-    } catch (error) {
-      console.error(error);
-    }
+  const handleMedicationUpdate = async (
+    medication_id,
+    medication_name,
+    medication_frequency,
+    medication_reason
+  ) => {
+    setMedicationName(medication_name);
+    setMedicationFrequency(medication_frequency);
+    setMedicationReason(medication_reason);
+    setMedicationId(medication_id);
+    // try {
+    //   await axios.post(apiUrl + `doctor/update_medication`, updatedMedication, {
+    //     headers: {
+    //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+    //     },
+    //   });
+    //   setMedication((prevMedication) =>
+    //     prevMedication.map((med) =>
+    //       med._id === medicationId ? updatedMedication : med
+    //     )
+    //   );
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
 
   return (
@@ -88,7 +110,12 @@ const PatientMedication = ({ patient_id, patient_name }) => {
                 <Button
                   label="Update"
                   onClick={() =>
-                    handleMedicationUpdate(rowData._id, { ...rowData })
+                    handleMedicationUpdate(
+                      rowData._id,
+                      rowData.name,
+                      rowData.frequency,
+                      rowData.reason
+                    )
                   }
                   className="p-mr-2"
                 />
@@ -101,6 +128,12 @@ const PatientMedication = ({ patient_id, patient_name }) => {
             )}
           ></Column>
         </DataTable>
+        <MedicationUpdateForm
+          medication_id={medicationId}
+          medication_frequency={medicationFrequency}
+          medication_name={medicationName}
+          medication_reason={medicationReason}
+        />
       </div>
     </div>
   );
