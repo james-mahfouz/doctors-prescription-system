@@ -35,8 +35,21 @@ const PatientMedication = ({ patient_id, patient_name }) => {
     fetchPatientMedication();
   }, [patient_id]);
 
-  const updateCallback = () => {
-    setShowUpdateForm(false);
+  const updateCallback = async () => {
+    try {
+      const response = await axios.get(
+        apiUrl + `doctor/get_patient_medication/${patient_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setMedication(response.data.medications);
+      setShowUpdateForm(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const cancelCallBack = () => {
