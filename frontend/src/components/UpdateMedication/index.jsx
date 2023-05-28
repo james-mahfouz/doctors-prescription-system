@@ -84,9 +84,30 @@ const MedicationUpdateForm = ({
 
       return errors;
     },
-    onSubmit: (data) => {
-      data && show(data);
-      formik.resetForm();
+    onSubmit: async (data) => {
+      event.preventDefault();
+      const updatedData = {
+        name: data.name,
+        frequency: data.frequency,
+        reason: data.reason,
+        medication_id: medication_id,
+      };
+      try {
+        await axios.post(apiUrl + `doctor/update_medication`, updatedData, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        console.log("updated successfully");
+        data && show(data);
+        // setMedication((prevMedication) =>
+        //   prevMedication.map((med) =>
+        //     med._id === medicationId ? updatedMedication : med
+        //   )
+        // );
+      } catch (error) {
+        console.error(error);
+      }
     },
   });
 
