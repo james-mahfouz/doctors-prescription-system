@@ -7,15 +7,13 @@ import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { classNames } from "primereact/utils";
 
-const MedicationUpdateForm = ({
-  medication_id,
-  medication_name,
-  medication_frequency,
-  medication_reason,
-}) => {
-  const [name, setName] = useState(medication_name);
-  const [frequency, setFrequency] = useState(medication_frequency);
-  const [reason, setReason] = useState(medication_reason);
+const MedicationUpdateForm = (
+  props,
+  { medication_id, medication_name, medication_frequency, medication_reason }
+) => {
+  const [name, setName] = useState(props.medication_name);
+  const [frequency, setFrequency] = useState(props.medication_frequency);
+  const [reason, setReason] = useState(props.medication_reason);
   const apiUrl = process.env.API_URL;
 
   const toast = useRef(null);
@@ -23,43 +21,18 @@ const MedicationUpdateForm = ({
   const show = () => {
     toast.current.show({
       severity: "success",
-      summary: "Form Submitted",
+      summary: "Medication Updated",
       detail: formik.values.value,
     });
   };
 
   useEffect(() => {
     formik.setValues({
-      name: medication_name,
-      frequency: medication_frequency,
-      reason: medication_reason,
+      name: props.medication_name,
+      frequency: props.medication_frequency,
+      reason: props.medication_reason,
     });
   }, [medication_name, medication_frequency, medication_reason]);
-
-  const handleMedicationUpdate = async (event) => {
-    event.preventDefault();
-    const data = {
-      name: name,
-      frequency: frequency,
-      reason: reason,
-      medication_id: medication_id,
-    };
-    try {
-      await axios.post(apiUrl + `doctor/update_medication`, data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      console.log("updated successfully");
-      // setMedication((prevMedication) =>
-      //   prevMedication.map((med) =>
-      //     med._id === medicationId ? updatedMedication : med
-      //   )
-      // );
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -90,7 +63,7 @@ const MedicationUpdateForm = ({
         name: data.name,
         frequency: data.frequency,
         reason: data.reason,
-        medication_id: medication_id,
+        medication_id: props.medication_id,
       };
       try {
         await axios.post(apiUrl + `doctor/update_medication`, updatedData, {
@@ -98,13 +71,8 @@ const MedicationUpdateForm = ({
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        console.log("updated successfully");
         data && show(data);
-        // setMedication((prevMedication) =>
-        //   prevMedication.map((med) =>
-        //     med._id === medicationId ? updatedMedication : med
-        //   )
-        // );
+        props.handleUpdateCallBack();
       } catch (error) {
         console.error(error);
       }
@@ -123,9 +91,12 @@ const MedicationUpdateForm = ({
   };
 
   return (
-    <div className="card flex justify-content-center">
-      <form onSubmit={formik.handleSubmit} className="flex flex-column gap-2">
-        <span className="p-float-label">
+    <div className="card flex justify-content-center form">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="flex flex-column gap-2 update-form"
+      >
+        <span className="p-float-label form-element">
           <Toast ref={toast} />
           <InputText
             id="name"
@@ -138,7 +109,7 @@ const MedicationUpdateForm = ({
         </span>
         {getFormErrorMessage("name")}
 
-        <span className="p-float-label">
+        <span className="p-float-label form-element">
           <InputText
             id="frequency"
             name="frequency"
@@ -152,7 +123,7 @@ const MedicationUpdateForm = ({
         </span>
         {getFormErrorMessage("frequency")}
 
-        <span className="p-float-label">
+        <span className="p-float-label form-element">
           <InputText
             id="reason"
             name="reason"
@@ -166,7 +137,19 @@ const MedicationUpdateForm = ({
         </span>
         {getFormErrorMessage("reason")}
 
-        <Button type="submit" label="Submit" />
+        <div className="upload-form-submit">
+          <Button
+            type="submit"
+            label="Update"
+            className="form-element submit-button"
+          />
+        </div>
+        <Button
+          type="submit"
+          label="Go Back"
+          className="submit-button"
+          onClick={props.handleCancelCallBack}
+        />
       </form>
     </div>
   );

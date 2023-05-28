@@ -182,3 +182,32 @@
     min-width: 30rem;
     width: 80%;
 }
+
+.update-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+
+.form-element {
+    margin-bottom: 15px;
+}
+
+.update-form-element{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+}
+
+.submit-button{
+    display: flex;
+    width: 100%;
+}
+
+.upload-form-submit{
+    width: 100%;
+    margin-bottom: 10px;
+}
