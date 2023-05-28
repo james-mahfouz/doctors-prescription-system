@@ -1,8 +1,6 @@
 import logo from "../../assets/logo-white-01.png";
 import "./index.css";
 import DisplayUsers from "../DisplayUsers";
-import DisplayFiles from "../DisplayFiles";
-import AllHistory from "../AllHistory";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -23,19 +21,6 @@ const Admin = () => {
     getAdminName();
   }, []);
 
-  const handleOption = (option) => {
-    // option === 1
-    //   ? setAdminFunction(<DisplayFiles />)
-    //   : setAdminFunction(<DisplayUsers />);
-    if (option == 2) {
-      setAdminFunction(<DisplayUsers />);
-    } else if (option == 1) {
-      setAdminFunction(<DisplayFiles />);
-    } else {
-      setAdminFunction(<AllHistory />);
-    }
-  };
-
   const goLanding = () => {
     navigate("/");
   };
@@ -43,7 +28,7 @@ const Admin = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("admin_name");
-    navigate("/");
+    navigate("/login");
   };
   return (
     <div className="admin-body">
@@ -55,12 +40,6 @@ const Admin = () => {
           <div className="option" onClick={() => handleOption(2)}>
             <h4>Display Users</h4>
           </div>
-          <div className="option" onClick={() => handleOption(1)}>
-            <h4>Files Uploaded</h4>
-          </div>
-          <div className="option" onClick={() => handleOption(3)}>
-            <h4>History</h4>
-          </div>
         </div>
       </section>
 
@@ -69,7 +48,7 @@ const Admin = () => {
           <div className="admin-name">
             <h3>{adminName}</h3>
           </div>
-          <div className="logout-btn" onClick={() => handleLogout()}>
+          <div className="logout-btn">
             <h4>Logout</h4>
           </div>
         </div>

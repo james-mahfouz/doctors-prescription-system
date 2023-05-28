@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MedicationUpdateForm from "../UpdateMedication";
+import MedicationAddForm from "../AddMedication";
 
 import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
@@ -9,6 +10,7 @@ import { Column } from "primereact/column";
 const PatientMedication = (props, { patient_id, patient_name }) => {
   const [medication, setMedication] = useState([]);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
   const [medicationName, setMedicationName] = useState("");
   const [medicationFrequency, setMedicationFrequency] = useState("");
   const [medicationReason, setMedicationReason] = useState("");
@@ -47,6 +49,7 @@ const PatientMedication = (props, { patient_id, patient_name }) => {
       );
       setMedication(response.data.medications);
       setShowUpdateForm(false);
+      setShowAddForm(false);
     } catch (error) {
       console.log(error);
     }
@@ -54,6 +57,7 @@ const PatientMedication = (props, { patient_id, patient_name }) => {
 
   const cancelCallBack = () => {
     setShowUpdateForm(false);
+    setShowAddForm(false);
   };
 
   const handleMedicationDelete = async (medicationId) => {
@@ -95,10 +99,14 @@ const PatientMedication = (props, { patient_id, patient_name }) => {
     setShowUpdateForm(true);
   };
 
+  const handleAddMedication = () => {
+    setShowAddForm(true);
+  };
+
   return (
     <div className="popup-overlay">
       <div className="popup">
-        {!showUpdateForm && (
+        {!showUpdateForm && !showAddForm && (
           <>
             <div className="medication-header">
               <h2>{props.patient_name} Medication</h2>
@@ -115,7 +123,7 @@ const PatientMedication = (props, { patient_id, patient_name }) => {
               value={medication}
               className="p-datatable-striped"
               scrollable
-              scrollHeight="400px"
+              scrollHeight="500px"
               virtualScrollerOptions={{ itemSize: 20 }}
               tableStyle={{ width: "42rem" }}
               sortMode="multiple"
@@ -150,7 +158,27 @@ const PatientMedication = (props, { patient_id, patient_name }) => {
                 )}
               ></Column>
             </DataTable>
+            <Button
+              label="Add Medication"
+              icon="pi pi-plus"
+              className="add-medication"
+              onClick={handleAddMedication}
+              style={{
+                backgroundColor: "transparent",
+                color: "#FF0000",
+                borderColor: "#FF0000",
+              }}
+            />
           </>
+        )}
+        {showAddForm && (
+          <div className="update-form">
+            <MedicationAddForm
+              handleCancelCallBack={cancelCallBack}
+              handleUpdateCallBack={updateCallback}
+              patient_id={props.patient_id}
+            />
+          </div>
         )}
 
         {showUpdateForm && (

@@ -217,3 +217,8 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.add-medication{
+    margin-top: 5px;
+    width: 100%;
+}
