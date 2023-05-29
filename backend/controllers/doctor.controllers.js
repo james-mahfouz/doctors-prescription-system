@@ -4,9 +4,14 @@ const User = require('../models/userModel')
 exports.get_patients = async (req, res) => {
     try {
         const doctor_id = req.user._id
-        console.log(doctor_id)
+
         const patients = await User.findById(doctor_id).populate('patient', '-password -role -__v -patient -medication')
-        return res.status(200).json({ patients: patients.patient })
+
+        return res.status(200).json({
+            patients: patients.patient,
+            doctor_email: patients.email,
+            doctor_name: patients.name
+        })
 
     } catch (e) {
         res.status(500).json({ error: e.message })
@@ -49,7 +54,6 @@ exports.add_medication = async (req, res) => {
 exports.delete_medication = async (req, res) => {
     try {
         const { patient_id, medication_id } = req.body
-
         patient = await User.findById(patient_id)
         patient.medication.pull(medication_id);
         await patient.save();
