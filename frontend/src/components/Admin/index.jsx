@@ -6,20 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
   const [adminFunction, setAdminFunction] = useState(<DisplayUsers />);
-  const [adminName, setAdminName] = useState("");
+  const [adminName, setAdminName] = useState("James");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const getAdminName = () => {
-      const admin_name = localStorage.getItem("admin_name");
-      if (admin_name) {
-        setAdminName(admin_name);
-      } else {
-        setTimeout(getAdminName, 1000); // check again after 1 second
-      }
-    };
-    getAdminName();
-  }, []);
 
   const goLanding = () => {
     navigate("/");
@@ -37,8 +25,8 @@ const Admin = () => {
           <img src={logo} alt="" />
         </div>
         <div className="options">
-          <div className="option" onClick={() => handleOption(2)}>
-            <h4>Display Users</h4>
+          <div className="option">
+            <h4>Display Patients</h4>
           </div>
         </div>
       </section>
@@ -49,7 +37,7 @@ const Admin = () => {
             <h3>{adminName}</h3>
           </div>
           <div className="logout-btn">
-            <h4>Logout</h4>
+            <h4 onClick={handleLogout}>Logout</h4>
           </div>
         </div>
 

@@ -7,7 +7,10 @@ import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 
-const PatientMedication = (props, { patient_id, patient_name }) => {
+const PatientMedication = (
+  props,
+  { patient_id, patient_name, doctor_email }
+) => {
   const [medication, setMedication] = useState([]);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -15,8 +18,9 @@ const PatientMedication = (props, { patient_id, patient_name }) => {
   const [medicationFrequency, setMedicationFrequency] = useState("");
   const [medicationReason, setMedicationReason] = useState("");
   const [medicationId, setMedicationId] = useState("");
-  const apiUrl = process.env.API_URL;
+  const [patientEmail, setPatientEmail] = useState("");
 
+  const apiUrl = process.env.API_URL;
   useEffect(() => {
     const fetchPatientMedication = async () => {
       try {
@@ -28,6 +32,7 @@ const PatientMedication = (props, { patient_id, patient_name }) => {
             },
           }
         );
+        setPatientEmail(response.data.patient_email);
         setMedication(response.data.medications);
       } catch (error) {
         console.log(error);
@@ -188,6 +193,7 @@ const PatientMedication = (props, { patient_id, patient_name }) => {
               medication_frequency={medicationFrequency}
               medication_name={medicationName}
               medication_reason={medicationReason}
+              patient_id={props.patient_id}
               handleUpdateCallBack={updateCallback}
               handleCancelCallBack={cancelCallBack}
             />

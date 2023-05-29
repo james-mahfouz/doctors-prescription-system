@@ -9,7 +9,13 @@ import { classNames } from "primereact/utils";
 
 const MedicationUpdateForm = (
   props,
-  { medication_id, medication_name, medication_frequency, medication_reason }
+  {
+    medication_id,
+    medication_name,
+    medication_frequency,
+    medication_reason,
+    patient_id,
+  }
 ) => {
   const [name, setName] = useState(props.medication_name);
   const [frequency, setFrequency] = useState(props.medication_frequency);
@@ -64,6 +70,7 @@ const MedicationUpdateForm = (
         frequency: data.frequency,
         reason: data.reason,
         medication_id: props.medication_id,
+        patient_id: props.patient_id,
       };
       try {
         await axios.post(apiUrl + `doctor/update_medication`, updatedData, {
@@ -142,6 +149,7 @@ const MedicationUpdateForm = (
             type="submit"
             label="Update"
             className="form-element submit-button"
+            style={{ backgroundColor: "#FF0000" }}
           />
         </div>
         <Button
@@ -149,6 +157,7 @@ const MedicationUpdateForm = (
           label="Go Back"
           className="submit-button"
           onClick={props.handleCancelCallBack}
+          style={{ backgroundColor: "#FF0000" }}
         />
       </form>
     </div>

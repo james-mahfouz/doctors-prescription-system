@@ -131,6 +131,7 @@ const MedicationAddForm = (props) => {
             type="submit"
             label="Add Medication"
             className="form-element submit-button"
+            style={{ backgroundColor: "#FF0000" }}
           />
         </div>
         <Button
@@ -138,6 +139,7 @@ const MedicationAddForm = (props) => {
           label="Go Back"
           className="submit-button"
           onClick={props.handleCancelCallBack}
+          style={{ backgroundColor: "#FF0000" }}
         />
       </form>
     </div>

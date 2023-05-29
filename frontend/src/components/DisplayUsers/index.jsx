@@ -16,6 +16,8 @@ const DisplayUsers = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [patientId, setPatientId] = useState(null);
   const [patientName, setPatientName] = useState(null);
+  const [doctorName, setDoctorName] = useState("");
+  const [doctorEmail, setDoctorEmail] = useState("");
 
   const popupRef = useRef(null);
 
@@ -28,13 +30,11 @@ const DisplayUsers = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        console.log(response);
         setUsers(response.data.patients);
-        localStorage.setItem("admin_name", response.data.admin_name);
+        setDoctorName(response.data.doctor_name);
+        setDoctorEmail(response.data.doctor_email);
       } catch (e) {
-        if (e.response.data.detail.access === "denied") {
-          navigate("/");
-        }
+        navigate("/login");
       }
     };
     getUsers();
@@ -52,7 +52,7 @@ const DisplayUsers = () => {
 
   return (
     <div className="display-users">
-      <h1>Users</h1>
+      <h1>Patients</h1>
       <div className="card" style={{ padding: "0rem" }}>
         <DataTable
           value={users}
@@ -80,7 +80,7 @@ const DisplayUsers = () => {
             headerStyle={{ backgroundColor: "#FF0000", color: "white" }}
           ></Column>
           <Column
-            header="Files"
+            header="Medications"
             style={{ width: "20%" }}
             body={(rowData) => (
               <Button
@@ -103,6 +103,7 @@ const DisplayUsers = () => {
             <PatientMedication
               patient_id={patientId}
               patient_name={patientName}
+              doctor_email={doctorEmail}
               handleClose={handleClose}
             />
           </div>
