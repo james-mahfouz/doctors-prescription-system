@@ -1,6 +1,8 @@
 const Medication = require('../models/medicationModel')
 const User = require('../models/userModel')
+const sgMail = require('@sendgrid/mail')
 
+const EMAIL_API_KEY = process.env.EMAIL_API_KEY
 exports.get_patients = async (req, res) => {
     try {
         const doctor_id = req.user._id
@@ -22,7 +24,7 @@ exports.get_patient_medication = async (req, res) => {
     try {
         user_id = req.params.patient_id
         patient = await User.findById(user_id).populate('medication', "-__v")
-        return res.status(200).json({ medications: patient.medication })
+        return res.status(200).json({ medications: patient.medication, patient_email: patient.email })
     } catch (e) {
         res.status(500).json({ error: e.message })
     }
@@ -88,3 +90,19 @@ exports.update_medication = async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+const sendEmail = (to, subject, body_message) => {
+    sgMail.setApiKey(EMAIL_API_KEY)
+    const message = {
+        to: to,
+        from: "prescribecompany12@gmail.com",
+        subject: subject,
+        text: body_message,
+        html: `<h1>${body_message}</h1>`
+
+    }
+
+    sgMail.send(message)
+        .then(response => console.log('Email sent..'))
+        .catch(err => console.log(err))
+}
